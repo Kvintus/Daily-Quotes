@@ -19,24 +19,25 @@
               <v-icon>close</v-icon>
             </v-btn>
           </template>
-          <v-btn fab small color="white">
-            <v-icon>format_quote</v-icon>
+
+          <v-btn round small color="white">
+            <v-icon>format_quote</v-icon>All Quotes
           </v-btn>
 
-          <v-btn fab small color="white">
-            <v-icon>file_copy</v-icon>
+          <v-btn round small color="white">
+            <v-icon>file_copy</v-icon>My Quotes
           </v-btn>
 
-          <v-btn fab small color="white">
-            <v-icon>favorite</v-icon>
+          <v-btn round small color="white">
+            <v-icon>favorite</v-icon>Favourite Quotes
           </v-btn>
 
-          <v-btn fab small color="white">
-            <v-icon>supervisor_account</v-icon>
+          <v-btn round small color="white">
+            <v-icon>supervisor_account</v-icon>Authors
           </v-btn>
 
-          <v-btn fab small color="white">
-            <v-icon>settings</v-icon>
+          <v-btn round small color="white">
+            <v-icon>settings</v-icon>Settings
           </v-btn>
         </v-speed-dial>
       </v-flex>
@@ -76,6 +77,29 @@ export default {
 }
 .speed-dial-custom {
   margin-right: 10px;
+}
+.speed-dial-custom {
+}
+</style>
+
+<style lang="scss">
+.v-speed-dial__list {
+  display: flex;
+  align-items: flex-end;
+  .v-btn {
+    height: 32px;
+    padding: 0 15px;
+    display: flex;
+    flex-flow: row;
+    i {
+      height: 25px !important;
+      width: 25px !important;
+      color: black;
+      margin-left: -5px;
+      margin-right: 5px;
+      padding: 2px;
+    }
+  }
 }
 </style>
 
