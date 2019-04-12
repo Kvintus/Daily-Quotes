@@ -40,13 +40,13 @@ export default {
   .text {
     text-align: center;
     h1 {
-      font-size: 3.5rem;
+      font-size: 2.5rem;
       font-weight: 300;
     }
   }
   .author {
     text-align: right;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 </style>

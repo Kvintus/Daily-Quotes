@@ -2,7 +2,7 @@
   <div>
     <v-layout class="actions-wrapper">
       <v-flex xs6>
-        <v-btn fab small color="white">
+        <v-btn @click="navigateTo('/create-quote')" fab small color="white">
           <v-icon dark>add</v-icon>
         </v-btn>
       </v-flex>
@@ -20,23 +20,23 @@
             </v-btn>
           </template>
 
-          <v-btn round small color="white">
+          <v-btn @click="navigateTo('/all-quotes')" round small color="white">
             <v-icon>format_quote</v-icon>All Quotes
           </v-btn>
 
-          <v-btn round small color="white">
+          <v-btn @click="navigateTo('/my-quotes')" round small color="white">
             <v-icon>file_copy</v-icon>My Quotes
           </v-btn>
 
-          <v-btn round small color="white">
+          <v-btn @click="navigateTo('/favourite-quotes')" round small color="white">
             <v-icon>favorite</v-icon>Favourite Quotes
           </v-btn>
 
-          <v-btn round small color="white">
+          <v-btn @click="navigateTo('/authors')" round small color="white">
             <v-icon>supervisor_account</v-icon>Authors
           </v-btn>
 
-          <v-btn round small color="white">
+          <v-btn @click="navigateTo('/settings')" round small color="white">
             <v-icon>settings</v-icon>Settings
           </v-btn>
         </v-speed-dial>
@@ -52,6 +52,11 @@ export default {
     return {
       speedDialOpen: null
     };
+  },
+  methods: {
+    navigateTo(route) {
+      this.$router.push(route)
+    }
   }
 };
 </script>

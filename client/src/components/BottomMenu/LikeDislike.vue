@@ -41,7 +41,7 @@ export default {
   align-items: center;
   span {
     font-weight: 500;
-    font-size: 21px;
+    font-size: 18px;
   }
   i {
     color: white;

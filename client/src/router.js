@@ -7,6 +7,7 @@ import AllQuotes from '@/views/AllQuotes'
 import FavouriteQuotes from '@/views/FavouriteQuotes'
 import MyQuotes from '@/views/MyQuotes'
 import Settings from '@/views/Settings'
+import CreateQuote from '@/views/CreateQuote'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/my-quotes',
       name: 'MyQuotes',
       component: MyQuotes
+    },
+    {
+      path: '/create-quote',
+      name: 'CreateQuote',
+      component: CreateQuote
     },
   ]
 })

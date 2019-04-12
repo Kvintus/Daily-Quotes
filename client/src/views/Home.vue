@@ -4,7 +4,7 @@
       21/500
     </div>
     <div class="holder">
-      <Quote quote="test" author="Peter"/>
+      <Quote quote="I'm about to end this man's whole career" author="Ja"/>
     </div>
     <BottomMenu/>
   </div>
