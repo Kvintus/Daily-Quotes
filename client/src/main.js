@@ -18,13 +18,17 @@ var config = {
   messagingSenderId: "1049725847136"
 };
 firebase.initializeApp(config);
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
 // Set the user upon App start
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     console.log('user is logged');
     store.commit('setUser', pick(user, ['uid', 'photoUrl', 'email', 'displayName']))
+    store.dispatch('getAndSetUserNick', user.uid)
+  } else {
+    console.log('user logged out');
+    store.dispatch('clearUser')
   }
 })
 

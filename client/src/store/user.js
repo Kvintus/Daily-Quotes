@@ -41,14 +41,15 @@ export default {
     mutations: {
         setUser: (state, user) => state.user = user,
         setToken: (state, token) => state.token = token,
-        setNick: (state, nick) => state.nick = nick
+        setNick: (state, nick) => state.nick = nick,
+        setUserFromFirestoreObject: (state, user) => state.user = pick(user, ['uid', 'photoUrl', 'email', 'displayName'])
     },
     actions: {
         async logUserIn({commit, dispatch}) {
             var provider = new firebase.auth.GoogleAuthProvider();
             return firebase.auth().signInWithPopup(provider).then(function(result) {
                
-                let user = pick(result.user, ['uid', 'photoUrl', 'email', 'displayName'])
+                let user = 
                 commit('setToken', result.credential.accessToken)
                 commit('setUser', user)
                 checkIfUserExistsInUserCollection(user.uid).then(exists => {
@@ -59,14 +60,6 @@ export default {
                     }
                 })
 
-                // Set Auth chagne callback
-                firebase.auth().onAuthStateChanged(function(user) {
-                    if (user) {
-                      // User is signed in.
-                    } else {
-                        dispatch('clearUser')
-                    }
-                  });
               }).catch(function(error) {
                 //TODO: Handle error
                 var errorCode = error.code;
@@ -75,19 +68,30 @@ export default {
                 var credential = error.credential;
             });
         },
-        async logUserOut({commit}) {
+        async getAndSetUserNick({commit}, userId) {
+            let nick = await getUserNick(userId);
+            commit('setNick', nick)
+        },
+        async signUserOut({commit}) {
+            console.log('signing user out');
+            
             await firebase.auth().signOut()
         },
         async clearUser({commit}) {
             commit('setUser', {})
             commit('setToken', null)
+            commit('setNick', null)
         },
-        retrieveAndSetCurrentUser({commit}) {
-            var user = firebase.auth().currentUser;
-            console.log(user);
+        async updateUser({commit, state}, payload) {
+            await db.collection('users').doc(state.user.uid).set(payload)
+            // No error so successfull
+            let updated = await db.collection('users').doc(state.user.uid).get()
+            console.log('updated: ', updated);
+            
         }
     },
     getters: {
-        isLoggedIn: (state) => state.token != undefined
+        isLoggedIn: (state) => state.token != undefined,
+        userNick: state => state.nick
     }
 }
