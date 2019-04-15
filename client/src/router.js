@@ -8,6 +8,7 @@ import FavouriteQuotes from '@/views/FavouriteQuotes'
 import MyQuotes from '@/views/MyQuotes'
 import Settings from '@/views/Settings'
 import CreateQuote from '@/views/CreateQuote'
+import Login from '@/views/Login'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/settings',
