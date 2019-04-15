@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import Authors from '@/views/Authors'
 import AllQuotes from '@/views/AllQuotes'
+import AuthorQuotes from '@/views/AuthorQuotes'
 import FavouriteQuotes from '@/views/FavouriteQuotes'
 import MyQuotes from '@/views/MyQuotes'
 import Settings from '@/views/Settings'
@@ -39,6 +40,11 @@ export default new Router({
     {
       path: '/all-quotes',
       name: 'AllQuotes',
+      component: AllQuotes
+    },
+    {
+      path: '/author-quotes/:authorId',
+      name: 'AuthorQuotes',
       component: AllQuotes
     },
     {

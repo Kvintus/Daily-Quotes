@@ -92,6 +92,7 @@ export default {
     },
     getters: {
         isLoggedIn: (state) => state.token != undefined,
-        userNick: state => state.nick
+        userNick: state => state.nick,
+        loggedInUser: state => state.user
     }
 }
