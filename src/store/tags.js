@@ -43,7 +43,7 @@ export default {
                     value: data.value
                 })
             }
-            commit('setAllTags', tags);
+            return commit('setAllTags', tags);
         }
     },
     getters: {
