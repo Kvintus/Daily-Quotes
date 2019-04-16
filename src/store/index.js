@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import UserModule from './user'
 import QuotesModule from './quotes'
+import TagModule from './tags'
 
 const uuid4 = require('uuid/v4')
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
     modules: {
         UserModule,
         QuotesModule,
+        TagModule
     },
     state: {
         appId: null
