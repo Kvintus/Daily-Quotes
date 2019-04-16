@@ -1,5 +1,44 @@
 import { db } from '@/main'
 import firebase from 'firebase'
+import omit from 'lodash.omit'
+
+async function getTagRef(tagValue) {// Get tag with the value
+    let tagSnap = await db.collection('tags').where('value', '==', tagValue).limit(1).get()
+    let tagRef = null
+    if (!tagSnap.size) {
+        // Create new
+        
+        tagRef = db.collection('tags').doc()
+        await tagRef.set({value: tagValue, quotes: []})
+    } else {
+        tagRef = db.collection('tags').doc(tagSnap.docs[0].id)
+    }
+    return tagRef
+}
+
+async function associateQuoteWithTag(quoteId, tagValue) {
+    let tagRef = await getTagRef(tagValue);
+    let tagDoc = await db.collection('tags').doc(tagRef.id).get()
+    
+    // Create record in m2m table
+    await tagRef.update({quotes: [...tagDoc.data().quotes, quoteId]})
+}
+
+async function deleteLikesAssociatedWithQuote(quoteDoc) {
+    let likesSnap = await db.collection('hearts').where('quoteId', '==', quoteDoc.id).get()
+    for (let heart of likesSnap.docs) {
+        console.log(heart);
+        heart.ref.delete()
+    }
+}
+
+async function removeAllAssociationsWithTags(quoteDoc) {
+    let tagsSnap = await db.collection('tags').where('quotes', 'array-contains', quoteDoc.id).get()
+    tagsSnap.forEach(tag => {
+        let quotes = tag.data().quotes.filter(quote => quote != quoteDoc.id)
+        tag.ref.update({quotes})
+    })
+}
 
 export default {
     state: {
@@ -23,10 +62,23 @@ export default {
     },
     actions: {
         async createQuote({commit}, quote) {
-            await db.collection('quotes').doc().set(quote)
+            // Create quote
+            let newQuoteRef = db.collection('quotes').doc()
+            await newQuoteRef.set(omit(quote, ['tags']))
+            
+            // Add tags
+            for (let tag of quote.tags) {
+                associateQuoteWithTag(newQuoteRef.id, tag)
+            }
         },
         async deleteQuote({commit}, quoteId) {
-            await db.collection('quotes').doc(quoteId).delete()
+            let quoteDoc = await db.collection('quotes').doc(quoteId)
+            let promArr = [
+                removeAllAssociationsWithTags(quoteDoc),
+                deleteLikesAssociatedWithQuote(quoteDoc)
+            ]
+            await Promise.all(promArr)
+            quoteDoc.delete()
             commit('removeQuoteFromAuthorQuotes', quoteId)
         },
         async likeQuote({rootGetters}, {quoteId, positive}) {
@@ -66,7 +118,6 @@ export default {
                 let toPush = {...quoteDoc.data(), id: quoteDoc.id, authorNick: user.data().nick}
                 quotes.push(toPush)
             }
-            
             commit('setAllQuotes', quotes)
         }
     },
