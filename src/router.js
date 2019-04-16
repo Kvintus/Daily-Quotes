@@ -13,7 +13,7 @@ import Login from '@/views/Login'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'default',
   base: process.env.BASE_URL,
   routes: [
     {
