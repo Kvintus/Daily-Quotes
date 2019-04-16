@@ -11,7 +11,7 @@
             / 
             <v-icon @click="dislikeQuote" :color="currentUserDislikedThisQuote ? 'red' : 'white'">mdi-thumb-down</v-icon>
             <span class="ratio">{{likeDislikeRatio}}</span>
-            <v-icon @click="deleteQuote" class="delete" color="white">mdi-delete</v-icon>
+            <v-icon v-if="quoteBelongsToCurrentUser" @click="deleteQuote" class="delete" color="white">mdi-delete</v-icon>
         </v-flex>
     </v-layout>
 </div>
@@ -48,17 +48,37 @@ export default {
     },
     methods: {
         async likeQuote() {
-            await this.$store.dispatch('likeQuote', {quoteId: this.id, authorId: this.author.id, positive: true})
-            this.negativeLikes = this.negativeLikes.filter(userId => userId !== this.currentUserId)
-            this.positiveLikes.push(this.currentUserId)
+            if (this.positiveLikes.includes(this.currentUserId)) {
+                await this.deleteLike()
+                this.removeCurrentUserFromPositiveLikes()
+            } else {
+                await this.$store.dispatch('likeQuote', {quoteId: this.id, authorId: this.author.id, positive: true})
+                this.removeCurrentUserFromNegativeLikes()
+                this.positiveLikes.push(this.currentUserId)
+            }
         },
-        dislikeQuote() {
-            this.$store.dispatch('likeQuote', {quoteId: this.id, authorId: this.author.id, positive: false})
-            this.positiveLikes = this.positiveLikes.filter(userId => userId !== this.currentUserId)
-            this.negativeLikes.push(this.currentUserId)
+        async dislikeQuote() {
+            if (this.negativeLikes.includes(this.currentUserId)) {
+                await this.deleteLike()
+                this.removeCurrentUserFromNegativeLikes()
+            } else {
+                await this.$store.dispatch('likeQuote', {quoteId: this.id, authorId: this.author.id, positive: false})
+                this.removeCurrentUserFromPositiveLikes()
+                this.negativeLikes.push(this.currentUserId)
+            }
+        },
+        async deleteLike() {
+            let likeSnap = await db.collection('hearts').where('userId', '==', this.author.id).where('quoteId', '==', this.id).get()
+            likeSnap.forEach(likeDoc => likeDoc.ref.delete())
         },
         deleteQuote() {
             this.$store.dispatch('deleteQuote', this.id)
+        },
+        removeCurrentUserFromPositiveLikes() {
+            this.positiveLikes = this.positiveLikes.filter(userId => userId !== this.currentUserId)
+        },
+        removeCurrentUserFromNegativeLikes() {
+            this.negativeLikes = this.negativeLikes.filter(userId => userId !== this.currentUserId)
         }
     },
     async mounted() {
@@ -87,7 +107,8 @@ export default {
         },
         currentUserId() {
             return this.$store.getters.loggedInUser.uid
-        }
+        },
+        quoteBelongsToCurrentUser() {return this.currentUserId === this.author.id}
     }
 }
 </script>

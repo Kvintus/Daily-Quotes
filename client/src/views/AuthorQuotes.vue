@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1>{{authorQuotes.nick}}</h1>
+        <h1>{{currentUsersQuotes ? "My Quotes" : authorQuotes.nick}}</h1>
         <div class="quotes">
             <QuoteItem
                 v-for="quote in authorQuotes.quotes" :key="quote.id"
@@ -16,6 +16,7 @@
 import QuoteItem from '@/components/AuthorQuotes/QuoteListItem'
 import store from '@/store'
 export default {
+    name: "AuthorQuotes",
     components: {
         QuoteItem,
     },
@@ -30,7 +31,8 @@ export default {
     //     this.$store.dispatch('fetchAuthorQuotes', this.$route.params.authorId)
     // }
     computed: {
-        authorQuotes(){ return this.$store.getters.authorQuotes }
+        authorQuotes(){ return this.$store.getters.authorQuotes },
+        currentUsersQuotes() {return this.$store.getters.loggedInUser.uid === this.$route.params.authorId}
     }
 }
 </script>

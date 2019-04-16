@@ -30,10 +30,12 @@ export default {
             
             let currentUserId = rootGetters.loggedInUser.uid
             let likeSnapshot = await db.collection('hearts').where('userId', '==', currentUserId).where('quoteId', '==', quoteId).get()
-            console.log(positive);
             
             if (likeSnapshot.size) {
                 likeSnapshot.forEach(like => {
+                    if (like.data().positive === positive) {
+                        like.ref.delete()
+                    }
                     like.ref.update({positive})
                 })
             } else {
