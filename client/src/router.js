@@ -45,7 +45,7 @@ export default new Router({
     {
       path: '/author-quotes/:authorId',
       name: 'AuthorQuotes',
-      component: AllQuotes
+      component: AuthorQuotes
     },
     {
       path: '/favourite-quotes',
