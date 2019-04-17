@@ -41,7 +41,7 @@ html {
     z-index: 1;
 }
 .blurry {
-    filter: blur(4px)
+    filter: blur(4px) brightness(0.6) !important;
 }
 .bg {
     background-image: url('/backgrounds/stars-bluelight.jpg');
@@ -53,6 +53,7 @@ html {
     z-index: 0;
     position: fixed;
     transform: scale(1.2);
+    filter: brightness(0.8);
 }
 
 .main-container {

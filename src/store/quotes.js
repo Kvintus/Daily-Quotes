@@ -43,7 +43,6 @@ async function associateQuoteWithTag(quoteId, tagValue) {
 async function deleteLikesAssociatedWithQuote(quoteDoc) {
     let likesSnap = await db.collection('hearts').where('quoteId', '==', quoteDoc.id).get()
     for (let heart of likesSnap.docs) {
-        console.log(heart);
         heart.ref.delete()
     }
 }
@@ -133,7 +132,6 @@ export default {
         async fetchAllQuotes({commit}) {
             let quotesSnap = await db.collection('quotes').get()
             let quotes = []
-            console.log(quotesSnap.size);
             for (let quoteDoc of quotesSnap.docs) {
                 let user = await db.collection('users').doc(quoteDoc.data().userId).get()
                 let toPush = {...quoteDoc.data(), id: quoteDoc.id, authorNick: user.data().nick}

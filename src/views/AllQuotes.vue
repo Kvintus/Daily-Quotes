@@ -25,14 +25,11 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
         store.dispatch("fetchAllTags").then(() => {
-            console.log("action resolved");
             next();
         });
     },
     methods: {
         navigateToTagQuotes(value) {
-            console.log('trying to navigate', value);
-            
             this.$router.push({
                 name: 'AllQuotesFromTag',
                 params: { tagValue: value }

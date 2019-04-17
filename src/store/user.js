@@ -65,7 +65,6 @@ export default {
             await db.collection('users').doc(state.user.uid).set(payload)
             // No error so successfull
             let updated = await db.collection('users').doc(state.user.uid).get()
-            console.log('updated: ', updated);
             
         }
     },
