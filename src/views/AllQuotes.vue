@@ -55,6 +55,5 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
     padding-bottom: 2rem;
-    padding-top: 1rem;
 }
 </style>
