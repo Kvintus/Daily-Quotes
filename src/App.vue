@@ -2,9 +2,9 @@
     <v-app>
         <div :class="{'bg': true, 'blurry': shouldBlur}"></div>
         <v-container class="main-container">
-            <transition name="fade">
+            <!-- <transition name="fade"> -->
                 <router-view></router-view>
-            </transition>
+            <!-- </transition> -->
         </v-container>
     </v-app>
 </template>
