@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <div class="bg"></div>
-        <v-container>
+        <div :class="{'bg': true, 'blurry': shouldBlur}"></div>
+        <v-container class="main-container">
             <router-view></router-view>
         </v-container>
     </v-app>
@@ -14,6 +14,11 @@ export default {
         return {
             //
         };
+    },
+    computed: {
+        shouldBlur() {
+            return this.$route.name !== 'home'
+        }
     }
 };
 </script>
@@ -25,19 +30,24 @@ html {
 }
 * {
     color: white;
+    z-index: 1;
+}
+.blurry {
+    filter: blur(4px)
 }
 .bg {
     background-image: url('/backgrounds/stars-bluelight.jpg');
-    height: 100%;
+    height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
     z-index: 0;
-    position: absolute;
+    position: fixed;
+    transform: scale(1.2);
 }
 
-.container {
-    padding-bottom: 0;
+.main-container {
+    max-height: 100vh
 }
 </style>

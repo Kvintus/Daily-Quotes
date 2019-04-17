@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentQuote">
+  <div class="wrapper" v-if="currentQuote">
     <div class="top-counter">
       {{currentQuoteIndex+1}}/{{quotes.length}}
     </div>
@@ -50,7 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 .holder {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -61,8 +61,12 @@ export default {
   color: rgb(168, 168, 168);
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   text-align: center;
+}
+.wrapper {
+    height: 100%;
 }
 </style>
 

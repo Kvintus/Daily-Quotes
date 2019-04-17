@@ -45,7 +45,7 @@ export default {
     left: 0;
     width: 100%;
     text-align: center;
-    padding-bottom: 19px;
+    padding-bottom: 10px;
   .flex {
     display: flex;
     justify-content: center;

@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <div>
         <h1>{{currentUsersQuotes ? "My Quotes" : authorQuotes.nick}}</h1>
         <div class="quotes">
             <QuoteItem
@@ -9,7 +9,7 @@
                 :id="quote.id"
             />
         </div>
-    </v-container>
+    </div>
 </template>
 
 <script>
