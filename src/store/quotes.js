@@ -1,27 +1,43 @@
-import { db } from '@/main'
+import {
+    db
+} from '@/main'
 import firebase from 'firebase'
 import omit from 'lodash.omit'
+import {getUserNick} from './user'
 
-async function getTagRef(tagValue) {// Get tag with the value
+async function getTagRef(tagValue) { // Get tag with the value
     let tagSnap = await db.collection('tags').where('value', '==', tagValue).limit(1).get()
     let tagRef = null
     if (!tagSnap.size) {
         // Create new
-        
+
         tagRef = db.collection('tags').doc()
-        await tagRef.set({value: tagValue, quotes: []})
+        await tagRef.set({
+            value: tagValue,
+            quotes: []
+        })
     } else {
         tagRef = db.collection('tags').doc(tagSnap.docs[0].id)
     }
     return tagRef
 }
 
+async function getQuotesAssociatedWithTag(tagValue) {
+    let tagSnap = await db.collection('tags').where('value', '==', tagValue).get()
+    if (tagSnap.docs.length > 0) {
+        return tagSnap.docs[0].data().quotes;
+    }
+    return []
+}
+
 async function associateQuoteWithTag(quoteId, tagValue) {
     let tagRef = await getTagRef(tagValue);
     let tagDoc = await db.collection('tags').doc(tagRef.id).get()
-    
+
     // Create record in m2m table
-    await tagRef.update({quotes: [...tagDoc.data().quotes, quoteId]})
+    await tagRef.update({
+        quotes: [...tagDoc.data().quotes, quoteId]
+    })
 }
 
 async function deleteLikesAssociatedWithQuote(quoteDoc) {
@@ -36,7 +52,9 @@ async function removeAllAssociationsWithTags(quoteDoc) {
     let tagsSnap = await db.collection('tags').where('quotes', 'array-contains', quoteDoc.id).get()
     tagsSnap.forEach(tag => {
         let quotes = tag.data().quotes.filter(quote => quote != quoteDoc.id)
-        tag.ref.update({quotes})
+        tag.ref.update({
+            quotes
+        })
     })
 }
 
@@ -47,7 +65,8 @@ export default {
             authorId: null,
             authorNick: null,
             quotes: []
-        }
+        },
+        tagQuotes: []
     },
     mutations: {
         setAuthorQuotes: (state, payload) => {
@@ -61,17 +80,21 @@ export default {
         setAllQuotes: (state, quotes) => state.allQuotes = quotes
     },
     actions: {
-        async createQuote({commit}, quote) {
+        async createQuote({
+            commit
+        }, quote) {
             // Create quote
             let newQuoteRef = db.collection('quotes').doc()
             await newQuoteRef.set(omit(quote, ['tags']))
-            
+
             // Add tags
             for (let tag of quote.tags) {
                 associateQuoteWithTag(newQuoteRef.id, tag)
             }
         },
-        async deleteQuote({commit}, quoteId) {
+        async deleteQuote({
+            commit
+        }, quoteId) {
             let quoteDoc = await db.collection('quotes').doc(quoteId)
             let promArr = [
                 removeAllAssociationsWithTags(quoteDoc),
@@ -81,33 +104,31 @@ export default {
             quoteDoc.delete()
             commit('removeQuoteFromAuthorQuotes', quoteId)
         },
-        async likeQuote({rootGetters}, {quoteId, positive}) {
+        async likeQuote({
+            rootGetters
+        }, {
+            quoteId,
+            positive
+        }) {
             let currentUserId = rootGetters.loggedInUser.uid
             let likeSnapshot = await db.collection('hearts').where('userId', '==', currentUserId).where('quoteId', '==', quoteId).get()
-            
+
             if (likeSnapshot.size) {
                 likeSnapshot.forEach(like => {
                     if (like.data().positive === positive) {
                         like.ref.delete()
                     }
-                    like.ref.update({positive})
+                    like.ref.update({
+                        positive
+                    })
                 })
             } else {
                 await db.collection('hearts').doc().set({
                     userId: currentUserId,
                     quoteId,
-                    positive, 
+                    positive,
                 })
             }
-        },
-        async fetchAuthorQuotes({commit}, authorId) {
-            let quotesSnapshot = await db.collection('quotes').where('userId', '==', authorId).get()
-            let nick = (await db.collection('users').doc(authorId).get()).data().nick
-            let quotes = []
-            quotesSnapshot.forEach(quote => {
-                quotes.push({...quote.data(), id: quote.id})
-            })
-            commit('setAuthorQuotes', {quotes, authorId, nick})
         },
         async fetchAllQuotes({commit}) {
             let quotesSnap = await db.collection('quotes').get()
@@ -119,6 +140,44 @@ export default {
                 quotes.push(toPush)
             }
             commit('setAllQuotes', quotes)
+        },
+        async fetchAuthorQuotes({
+            commit
+        }, authorId) {
+            let quotesSnapshot = await db.collection('quotes').where('userId', '==', authorId).get()
+            let nick = (await db.collection('users').doc(authorId).get()).data().nick
+            let quotes = []
+            quotesSnapshot.forEach(quote => {
+                quotes.push({
+                    ...quote.data(),
+                    id: quote.id
+                })
+            })
+            commit('setAuthorQuotes', {
+                quotes,
+                authorId,
+                nick
+            })
+        },
+        async fetchAllTagQutoes({
+            commit
+        }, tagValue) {
+            // Get tag
+            let quoteIds = await getQuotesAssociatedWithTag(tagValue);
+            let quotesPromArr = []
+            for (let quoteId of quoteIds) {
+                quotesPromArr.push((async() => {
+                    let quote = await db.collection('quotes').doc(quoteId).get()
+                    let quoteData = quote.data()
+                    return {
+                        ...quoteData,
+                        userNick: await getUserNick(quoteData.userId),
+                        id: quote.id
+                    }
+                })())
+            }
+            let quotes = await Promise.all(quotesPromArr)
+            return quotes            
         }
     },
     getters: {

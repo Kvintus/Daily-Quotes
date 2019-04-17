@@ -2,7 +2,9 @@
     <v-app>
         <div :class="{'bg': true, 'blurry': shouldBlur}"></div>
         <v-container class="main-container">
-            <router-view></router-view>
+            <transition name="fade">
+                <router-view></router-view>
+            </transition>
         </v-container>
     </v-app>
 </template>
@@ -24,6 +26,12 @@ export default {
 </script>
 
 <style lang="scss">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 body,
 html {
     height: 100%;

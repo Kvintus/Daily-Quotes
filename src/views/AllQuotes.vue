@@ -4,7 +4,8 @@
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <TagListItem
             v-for="tag in tagsToDisplay"
-            :key="tag.name"
+            @click.native="navigateToTagQuotes(tag.value)"
+            :key="tag.value"
             :numOfLikes="tag.numOfPositiveLikes"
             :numOfQuotes="tag.numOfQuotes"
             :name="tag.value"
@@ -27,6 +28,16 @@ export default {
             console.log("action resolved");
             next();
         });
+    },
+    methods: {
+        navigateToTagQuotes(value) {
+            console.log('trying to navigate', value);
+            
+            this.$router.push({
+                name: 'AllQuotesFromTag',
+                params: { tagValue: value }
+            })
+        }
     },
     computed: {
         tagsToDisplay() {

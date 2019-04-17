@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import QuoteItem from '@/components/AuthorQuotes/QuoteListItem'
+import QuoteItem from '@/components/QuoteListItem'
 import store from '@/store'
 export default {
     name: "AuthorQuotes",

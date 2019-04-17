@@ -27,7 +27,7 @@ async function addUserWithDefaultName(user) {
     })
 }
 
-async function getUserNick(userId) {
+export async function getUserNick(userId) {
     let doc = await db.collection('users').doc(userId).get()
     return doc.data().nick
 }
