@@ -1,8 +1,8 @@
 <template>
     <div class="like-dislike">
-        <v-icon :disabled="!isUserLoggedIn" @click="likeQuote" :color="currentUserLikedThisQuote ? 'red' : 'white'">mdi-heart</v-icon><span>{{positiveLikes.length}}</span>
+        <v-icon :size="fontSize" :disabled="!isUserLoggedIn" @click="likeQuote" :color="currentUserLikedThisQuote ? 'red' : 'white'">mdi-heart</v-icon><span>{{positiveLikes.length}}</span>
         / 
-        <v-icon :disabled="!isUserLoggedIn" @click="dislikeQuote" :color="currentUserDislikedThisQuote ? 'red' : 'white'">mdi-thumb-down</v-icon><span>{{negativeLikes.length}}</span>
+        <v-icon :size="fontSize" :disabled="!isUserLoggedIn" @click="dislikeQuote" :color="currentUserDislikedThisQuote ? 'red' : 'white'">mdi-thumb-down</v-icon><span>{{negativeLikes.length}}</span>
     </div>
 </template>
 
@@ -19,6 +19,10 @@ export default {
             type: String,
             required: true
         },
+        fontSize: {
+            type: String,
+            default: "1rem"
+        }
     },
     data() {
         return {
@@ -81,6 +85,12 @@ export default {
         },
         isUserLoggedIn() {
             return this.$store.getters.isLoggedIn
+        },
+        iconSizeClass() {
+            return {
+                'font-size': this.fontSize,
+                'color': 'black'
+            }
         }
     }
 }

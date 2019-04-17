@@ -47,35 +47,13 @@ export default {
     actions: {
         async logUserIn({commit, dispatch}) {
             var provider = new firebase.auth.GoogleAuthProvider();
-            return firebase.auth().signInWithRedirect(provider).then(function(result) {
-               
-                let user = 
-                commit('setToken', result.credential.accessToken)
-                commit('setUser', user)
-                checkIfUserExistsInUserCollection(user.uid).then(exists => {
-                    if (!exists) {
-                        addUserWithDefaultName(user)
-                    } else {
-                        getUserNick(user.uid).then(nick => commit('setNick', nick))
-                    }
-                })
-                return null;
-
-              }).catch(function(error) {
-                //TODO: Handle error
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                var email = error.email;
-                var credential = error.credential;
-            });
+            return firebase.auth().signInWithRedirect(provider)
         },
         async getAndSetUserNick({commit}, userId) {
             let nick = await getUserNick(userId);
             commit('setNick', nick)
         },
         async signUserOut({commit}) {
-            console.log('signing user out');
-            
             await firebase.auth().signOut()
         },
         async clearUser({commit}) {
@@ -92,7 +70,7 @@ export default {
         }
     },
     getters: {
-        isLoggedIn: (state) => Object.keys(state.user).length,
+        isLoggedIn: (state) => Object.keys(state.user).length > 0,
         userNick: state => state.nick,
         loggedInUser: state => state.user
     }

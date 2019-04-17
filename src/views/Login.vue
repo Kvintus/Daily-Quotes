@@ -10,12 +10,21 @@
 
 <script>
 export default {
+    watch: {
+        userIsSignedIn: function (is) {
+            if (is) {
+                this.$router.push({name: 'home'})
+            }
+        }
+    },
     methods: {
         signIn() {
             this.$store.dispatch('logUserIn')
-            .then(() => {
-                this.$router.push('/')
-            })
+        }
+    },
+    computed: {
+        userIsSignedIn: function() {
+            return this.$store.getters.isLoggedIn
         }
     }
 }
@@ -24,7 +33,6 @@ export default {
 <style lang="scss" scoped>
 .cst-wrapper {
     height: 100vh;
-    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;

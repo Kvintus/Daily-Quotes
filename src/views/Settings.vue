@@ -26,6 +26,7 @@ export default {
     },
     methods: {
         signOut() {
+            this.$router.push('/')
             this.$store.dispatch('signUserOut')
         },
         async save() {

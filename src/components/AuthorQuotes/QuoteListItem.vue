@@ -1,14 +1,14 @@
 <template>
 <div class="quote">
     <v-layout row wrap class="quote-holder">
-        <v-flex xs12><span class="quote-text">{{text}}</span></v-flex>
+        <v-flex xs12 class="text-display"><span class="quote-text">"{{text}}"</span></v-flex>
     </v-layout>
     <v-layout row wrap>
         <v-flex xs4>{{author.nick}}</v-flex>
         <v-flex xs4>{{formattedDate}}</v-flex>
         <v-flex xs4 class="actions">
-            <LikeDislike :author="author" :id="id"/>
-            <v-icon v-if="quoteBelongsToCurrentUser" @click="deleteQuote" class="delete" color="white">mdi-delete</v-icon>
+            <LikeDislike fontSize="1.2rem" :author="author" :id="id"/>
+            <v-icon size="1.5rem" v-if="quoteBelongsToCurrentUser" @click="deleteQuote" class="delete" color="white">mdi-delete</v-icon>
         </v-flex>
     </v-layout>
 </div>
@@ -64,8 +64,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.text-display {
+    padding: 0 20px 0 30px;
+    overflow-wrap: break-word;
+}
 .quote {
     border: 1px solid white;
+    position: relative;
     border-radius: 5px;
     padding: 10px;
     div {
@@ -74,7 +79,8 @@ export default {
 }
 .quote-text {
     margin-bottom: 1rem;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
+    padding: 0 20px 0 20px;
 }
 .quote-holder {
     margin-bottom: 1rem;
@@ -87,7 +93,10 @@ export default {
     padding-left: 0.6rem;
 }
 .delete {
-    padding-left: 0.6rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
 }
 .red {
     color: red !important;
