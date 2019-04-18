@@ -2,7 +2,7 @@
   <div >
       <v-layout row wrap class="bottom-menu">
         <v-flex xs4>{{currentDate}}</v-flex>
-        <v-flex xs4><LikeDislike :author="author" :id="id" /></v-flex>
+        <v-flex xs4><LikeDislike fontSize="2rem" :author="author" :id="id" /></v-flex>
         <v-flex xs4><Actions/></v-flex>
       </v-layout>
   </div>

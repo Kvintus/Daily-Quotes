@@ -1,7 +1,7 @@
 <template>
     <div class="like-dislike">
         <v-icon :size="fontSize" :disabled="!isUserLoggedIn" @click="likeQuote" :color="currentUserLikedThisQuote ? 'red' : 'white'">mdi-heart</v-icon><span>{{positiveLikes.length}}</span>
-        / 
+        <span class="divider">/</span> 
         <v-icon :size="fontSize" :disabled="!isUserLoggedIn" @click="dislikeQuote" :color="currentUserDislikedThisQuote ? 'red' : 'white'">mdi-thumb-down</v-icon><span>{{negativeLikes.length}}</span>
     </div>
 </template>
@@ -98,8 +98,15 @@ export default {
 
 <style lang="scss" scoped>
 .like-dislike {
+    display: flex;
+    align-items: center;
     span {
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+    .divider {
         margin-left: 5px;
+        margin-right: 5px;
     }
 }
 .red {
