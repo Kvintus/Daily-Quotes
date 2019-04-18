@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <h1>Authors</h1>
+        <Heading text="Authors"/>
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <TagListItem
             v-for="author in authorsToDisplay"
@@ -14,35 +14,39 @@
 </template>
 
 <script>
-import TagListItem from '@/components/AllQuotes/TagItem'
+import TagListItem from "@/components/AllQuotes/TagItem";
+import Heading from "@/components/Misc/Heading";
 export default {
-    components: {TagListItem},
+    components: { TagListItem, Heading },
     data() {
         return {
-            searchTerm: '',
+            searchTerm: "",
             authors: []
-        }
+        };
     },
     computed: {
         authorsToDisplay() {
             return this.authors.filter(author => {
-                return !this.searchTerm || author.nick.indexOf(this.searchTerm) > -1;
-            })
+                return (
+                    !this.searchTerm ||
+                    author.nick.indexOf(this.searchTerm) > -1
+                );
+            });
         }
     },
     methods: {
         navigateToUser(authorId) {
             this.$router.push({
-                name: 'AuthorQuotes',
+                name: "AuthorQuotes",
                 params: {
-                    authorId 
+                    authorId
                 }
-            })
+            });
         }
     },
     async mounted() {
-        let authors = await this.$store.dispatch('fetchAllAuthors')
-        this.authors = authors
+        let authors = await this.$store.dispatch("fetchAllAuthors");
+        this.authors = authors;
     }
-}
+};
 </script>

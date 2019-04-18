@@ -2,7 +2,7 @@
     <div>
         <v-layout class="actions-wrapper">
             <v-flex xs6>
-                <v-btn @click="navigateTo('/create-quote')" fab small color="white">
+                <v-btn :disabled="!isUserSignedIn" @click="navigateTo('/create-quote')" fab small color="white">
                     <v-icon dark>add</v-icon>
                 </v-btn>
             </v-flex>
@@ -16,7 +16,7 @@
                     <template v-slot:activator>
                         <v-btn fab small color="white">
                             <v-icon dark>dehaze</v-icon>
-                            <v-icon>close</v-icon>
+                            <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </template>
 
@@ -25,6 +25,7 @@
                     </v-btn>
 
                     <v-btn
+                        v-if="isUserSignedIn"
                         @click="navigateTo(`author-quotes/${currentUserId}`)"
                         round
                         small
@@ -33,7 +34,7 @@
                         <v-icon>file_copy</v-icon>My Quotes
                     </v-btn>
 
-                    <v-btn @click="navigateTo('/favourite-quotes')" round small color="white">
+                    <v-btn v-if="isUserSignedIn" @click="navigateTo('/favourite-quotes')" round small color="white">
                         <v-icon>favorite</v-icon>Favourite Quotes
                     </v-btn>
 
@@ -41,11 +42,11 @@
                         <v-icon>supervisor_account</v-icon>Authors
                     </v-btn>
 
-                    <v-btn @click="navigateTo('/settings')" round small color="white">
+                    <v-btn v-if="isUserSignedIn" @click="navigateTo('/settings')" round small color="white">
                         <v-icon>settings</v-icon>Settings
                     </v-btn>
 
-                    <v-btn @click="navigateTo('/login')" round small color="white">
+                    <v-btn v-if="!isUserSignedIn" @click="navigateTo('/login')" round small color="white">
                         <v-icon>mdi-login</v-icon>Sign In
                     </v-btn>
                 </v-speed-dial>
@@ -70,7 +71,8 @@ export default {
     computed: {
         currentUserId() {
             return this.$store.getters.loggedInUser.uid;
-        }
+        },
+        isUserSignedIn() {return this.$store.getters.isLoggedIn}
     }
 };
 </script>

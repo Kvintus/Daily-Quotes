@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <h1>Tags</h1>
+        <Heading text="Tags"/>
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <TagListItem
             v-for="tag in tagsToDisplay"
@@ -15,9 +15,10 @@
 <script>
 import store from "@/store";
 import TagListItem from "@/components/AllQuotes/TagItem";
+import Heading from "@/components/Misc/Heading";
 
 export default {
-    components: { TagListItem },
+    components: { TagListItem, Heading },
     data() {
         return {
             searchTerm: ""

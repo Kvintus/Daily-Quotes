@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <h1>{{tagValue}}</h1>
+        <Heading :text="tagHeading"/>
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <QuoteItem
             class="quote"
@@ -15,19 +15,27 @@
 <script>
 import store from "@/store";
 import QuoteItem from "@/components/QuoteListItem";
+import Heading from "@/components/Misc/Heading";
 
 export default {
-    components: { QuoteItem },
+    components: { QuoteItem, Heading },
     data() {
         return {
             searchTerm: "",
             quotes: []
         };
     },
+    mounted() {
+        store
+            .dispatch("fetchAllTagQutoes", this.$route.params.tagValue)
+            .then(quotes => {
+                this.quotes = quotes;
+            });
+    },
     beforeRouteEnter(to, from, next) {
-        store.dispatch("fetchAllTagQutoes", to.params.tagValue).then((quotes) => {
+        store.dispatch("fetchAllTagQutoes", to.params.tagValue).then(quotes => {
             next(vm => {
-                vm.quotes = quotes
+                vm.quotes = quotes;
             });
         });
     },
@@ -41,17 +49,14 @@ export default {
         },
         tagValue() {
             return this.$route.params.tagValue;
-        }
+        },
+        tagHeading() {return `Tag: ${this.tagValue}`}
     }
 };
 </script>
 
 
 <style lang="scss" scoped>
-.wrapper {
-    padding-bottom: 2rem;
-    padding-top: 1rem;
-}
 .quote {
     margin-top: 1.2rem;
 }
