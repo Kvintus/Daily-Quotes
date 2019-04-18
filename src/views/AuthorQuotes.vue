@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>{{currentUsersQuotes ? "My Quotes" : authorQuotes.nick}}</h1>
+        <Heading :text="currentUsersQuotes ? 'My Quotes' : authorQuotes.nick"/>
         <div class="quotes">
             <QuoteItem
                 v-for="quote in authorQuotes.quotes" :key="quote.id"
@@ -14,11 +14,13 @@
 
 <script>
 import QuoteItem from '@/components/QuoteListItem'
+import Heading from "@/components/Misc/Heading";
 import store from '@/store'
 export default {
     name: "AuthorQuotes",
     components: {
         QuoteItem,
+        Heading
     },
     data() {
         return {}

@@ -1,20 +1,15 @@
 <template>
-    <v-container>
+    <div>
+        <Heading text="Create Quote"/>
         <v-layout row wrap>
             <v-flex xs12>
-                <v-textarea
-                    v-model="quote.text"
-                    color="white"
-                    dark
-                    label="The quote..."
-                />
+                <v-textarea v-model="quote.text" color="white" dark label="The quote..."/>
                 <v-textarea
                     label="Comma-separated tags: love, relationships, happiness"
                     v-model="quote.tags"
                     color="white"
                     dark
-                >
-                </v-textarea>
+                ></v-textarea>
                 <h2>{{tagArray.length}}</h2>
                 <v-select
                     class="cst-select"
@@ -24,43 +19,61 @@
                     dark
                 ></v-select>
             </v-flex>
-            <v-btn large outline border :loading="publishing" dark @click="publish" color="white" class="publish">Publish Quote</v-btn>
+            <v-btn
+                large
+                outline
+                border
+                :loading="publishing"
+                dark
+                @click="publish"
+                color="white"
+                class="publish"
+            >Publish Quote</v-btn>
         </v-layout>
-    </v-container>
+    </div>
 </template>
 
 <script>
+import Heading from "@/components/Misc/Heading";
 export default {
+    components: { Heading },
     name: "CreateQuote",
     data() {
         return {
             quote: {
                 text: null,
-                language: 'en',
+                language: "en",
                 tags: null
             },
             languages: [
-                { value: 'en', text: 'English' },
-                { value: 'sk', text: 'Slovak' }
+                { value: "en", text: "English" },
+                { value: "sk", text: "Slovak" }
             ],
             publishing: false
-        }
+        };
     },
     methods: {
         async publish() {
-            await this.$store.dispatch('createQuote', {...this.quote, tags: this.tagArray, userId: this.loggedInUser.uid, createdAt: new Date().getTime()})
-            this.$router.push(`/author-quotes/${this.loggedInUser.uid}`)
+            await this.$store.dispatch("createQuote", {
+                ...this.quote,
+                tags: this.tagArray,
+                userId: this.loggedInUser.uid,
+                createdAt: new Date().getTime()
+            });
+            this.$router.push(`/author-quotes/${this.loggedInUser.uid}`);
         }
     },
     computed: {
         tagArray() {
-            return this.quote.tags ? this.quote.tags.split(', ').filter(e => e != "") : []
+            return this.quote.tags
+                ? this.quote.tags.split(", ").filter(e => e != "")
+                : [];
         },
         loggedInUser() {
-            return this.$store.getters.loggedInUser
+            return this.$store.getters.loggedInUser;
         }
-    },
-}
+    }
+};
 </script>
 
 <style>
