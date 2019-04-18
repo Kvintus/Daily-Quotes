@@ -20,6 +20,8 @@ var config = {
 firebase.initializeApp(config);
 // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
+// export const fAuth  = firebase.auth()
+
 // Set the user upon App start
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {

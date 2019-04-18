@@ -25,18 +25,23 @@ export default {
     state: {
         user: {},
         token: null,
-        nick: ""
+        nick: "",
+        isLoggingUserIn: false,
     },
     mutations: {
         setUser: (state, user) => state.user = user,
         setToken: (state, token) => state.token = token,
         setNick: (state, nick) => state.nick = nick,
-        setUserFromFirestoreObject: (state, user) => state.user = pick(user, ['uid', 'photoUrl', 'email', 'displayName'])
+        setUserFromFirestoreObject: (state, user) => state.user = pick(user, ['uid', 'photoUrl', 'email', 'displayName']),
+        setLoggingUserIn: (state, is) => state.isLoggingUserIn = is
     },
     actions: {
         async logUserIn({commit, dispatch}) {
+            commit('setLoggingUserIn', true)
             var provider = new firebase.auth.GoogleAuthProvider();
-            return firebase.auth().signInWithRedirect(provider)
+            let user = await firebase.auth().signInWithPopup(provider)
+            commit('setLoggingUserIn', false)
+            return user;
         },
         async getAndSetUserNick({commit}, userId) {
             let nick = await getUserNick(userId);
@@ -79,6 +84,7 @@ export default {
     getters: {
         isLoggedIn: (state) => Object.keys(state.user).length > 0,
         userNick: state => state.nick,
-        loggedInUser: state => state.user
+        loggedInUser: state => state.user,
+        isLoggingUserIn: state => state.isLoggingUserIn
     }
 }
