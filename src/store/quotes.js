@@ -57,6 +57,16 @@ async function removeAllAssociationsWithTags(quoteDoc) {
     })
 }
 
+export async function getNumberOfQuoteLikes(quoteId, positive) {
+    let likesSnap = null;
+    if (positive != null) {
+        likesSnap = await db.collection('hearts').where('quoteId', '==', quoteId).where('positive', '==', positive).get()
+    } else {
+        likesSnap = await db.collection('hearts').where('quoteId', '==', quoteId).get()
+    }
+    return likesSnap.size
+}
+
 export default {
     state: {
         allQuotes: [],

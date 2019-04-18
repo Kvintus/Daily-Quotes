@@ -1,19 +1,8 @@
 import pick from 'lodash.pick'
 import { db } from '@/main'
 import firebase from 'firebase'
+import quotes, {getNumberOfQuoteLikes} from './quotes'
 
-// var config = {
-//     apiKey: "AIzaSyAFiEXWGCwqexkQs7oll2GDhk0VAUyQsb4",
-//     authDomain: "daily-quotes-33683.firebaseapp.com",
-//     databaseURL: "https://daily-quotes-33683.firebaseio.com",
-//     projectId: "daily-quotes-33683",
-//     storageBucket: "daily-quotes-33683.appspot.com",
-//     messagingSenderId: "1049725847136"
-//   };
-
-// if (!firebase.apps.length) {
-//     firebase.initializeApp(config);
-// }
 
 async function checkIfUserExistsInUserCollection(userId) {
     let userRef = db.collection('users').doc(userId)
@@ -66,6 +55,25 @@ export default {
             // No error so successfull
             let updated = await db.collection('users').doc(state.user.uid).get()
             
+        },
+        async fetchAllAuthors() {
+            let authorsSnap = await db.collection('users').get()
+            return await Promise.all(authorsSnap.docs.map(async (authorDoc) => {
+                // Fetch all author quotes
+                let quoteStatisticsPromArray = []
+                let quotesOfAuthorSnap = await db.collection('quotes').where('userId', '==', authorDoc.id).get()
+                for (let quoteDoc of quotesOfAuthorSnap.docs) {
+                    quoteStatisticsPromArray.push(getNumberOfQuoteLikes(quoteDoc.id, true))
+                }
+                let quotesLikes = await Promise.all(quoteStatisticsPromArray)
+                // Fetch statistics to to quotes
+                return {
+                    id: authorDoc.id,
+                    numOfPositiveLikes: quotesLikes.reduce((a, b) => a + b),
+                    numOfQuotes: quotesOfAuthorSnap.docs.length,
+                    nick: await getUserNick(authorDoc.id)
+                }
+            }))
         }
     },
     getters: {
