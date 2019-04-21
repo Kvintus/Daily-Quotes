@@ -7,7 +7,7 @@
         <v-flex xs4>{{author.nick}}</v-flex>
         <v-flex xs4>{{formattedDate}}</v-flex>
         <v-flex xs4 class="actions">
-            <LikeDislike fontSize="1.2rem" :author="author" :id="id"/>
+            <LikeDislike @positiveLikeDeleted="$emit('positiveLikeDeleted')" fontSize="1.2rem" :author="author" :id="id"/>
             <v-icon size="1.5rem" v-if="quoteBelongsToCurrentUser" @click="deleteQuote" class="delete" color="white">mdi-delete</v-icon>
         </v-flex>
     </v-layout>

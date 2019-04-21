@@ -3,7 +3,9 @@ import {
 } from '@/main'
 import firebase from 'firebase'
 import omit from 'lodash.omit'
-import {getUserNick} from './user'
+import {
+    getUserNick
+} from './user'
 
 async function getTagRef(tagValue) { // Get tag with the value
     let tagSnap = await db.collection('tags').where('value', '==', tagValue).limit(1).get()
@@ -65,6 +67,23 @@ export async function getNumberOfQuoteLikes(quoteId, positive) {
         likesSnap = await db.collection('hearts').where('quoteId', '==', quoteId).get()
     }
     return likesSnap.size
+}
+
+export async function getQuoteArrayFromIdArray(arrayOfIds) {
+    let quotesPromArr = []
+    for (let quoteId of arrayOfIds) {
+        quotesPromArr.push((async () => {
+            let quote = await db.collection('quotes').doc(quoteId).get()
+            let quoteData = quote.data()
+            return {
+                ...quoteData,
+                userNick: await getUserNick(quoteData.userId),
+                id: quote.id
+            }
+        })())
+    }
+    let quotes = await Promise.all(quotesPromArr)
+    return quotes
 }
 
 export default {
@@ -139,15 +158,31 @@ export default {
                 })
             }
         },
-        async fetchAllQuotes({commit}) {
+        async fetchAllQuotes({
+            commit
+        }) {
             let quotesSnap = await db.collection('quotes').get()
             let quotes = []
             for (let quoteDoc of quotesSnap.docs) {
                 let user = await db.collection('users').doc(quoteDoc.data().userId).get()
-                let toPush = {...quoteDoc.data(), id: quoteDoc.id, authorNick: user.data().nick}
+                let toPush = {
+                    ...quoteDoc.data(),
+                    id: quoteDoc.id,
+                    authorNick: user.data().nick
+                }
                 quotes.push(toPush)
             }
             commit('setAllQuotes', quotes)
+        },
+        async fetchAllFavouriteQutoes({
+            commit,
+            rootGetters
+        }) {
+            // Fetch all hearts of user
+            let heartsSnap = await db.collection('hearts').where('userId', '==', rootGetters.loggedInUser.uid).get();
+            // map the ids
+            let ids = heartsSnap.docs.map(quoteSnap => quoteSnap.data().quoteId );
+            return await getQuoteArrayFromIdArray(ids)
         },
         async fetchAuthorQuotes({
             commit
@@ -172,20 +207,7 @@ export default {
         }, tagValue) {
             // Get tag
             let quoteIds = await getQuotesAssociatedWithTag(tagValue);
-            let quotesPromArr = []
-            for (let quoteId of quoteIds) {
-                quotesPromArr.push((async() => {
-                    let quote = await db.collection('quotes').doc(quoteId).get()
-                    let quoteData = quote.data()
-                    return {
-                        ...quoteData,
-                        userNick: await getUserNick(quoteData.userId),
-                        id: quote.id
-                    }
-                })())
-            }
-            let quotes = await Promise.all(quotesPromArr)
-            return quotes            
+            return await getQuoteArrayFromIdArray(quoteIds)
         }
     },
     getters: {

@@ -23,6 +23,7 @@ export async function getUserNick(userId) {
 
 export default {
     state: {
+        userStatusDetermined: false,
         user: {},
         token: null,
         nick: "",
@@ -33,7 +34,8 @@ export default {
         setToken: (state, token) => state.token = token,
         setNick: (state, nick) => state.nick = nick,
         setUserFromFirestoreObject: (state, user) => state.user = pick(user, ['uid', 'photoUrl', 'email', 'displayName']),
-        setLoggingUserIn: (state, is) => state.isLoggingUserIn = is
+        setLoggingUserIn: (state, is) => state.isLoggingUserIn = is,
+        setUserStatusDetermined: (state, determined) => state.userStatusDetermined = determined 
     },
     actions: {
         async logUserIn({commit, dispatch}) {
@@ -85,6 +87,7 @@ export default {
         isLoggedIn: (state) => Object.keys(state.user).length > 0,
         userNick: state => state.nick,
         loggedInUser: state => state.user,
-        isLoggingUserIn: state => state.isLoggingUserIn
+        isLoggingUserIn: state => state.isLoggingUserIn,
+        userStatusDetermined: state => state.userStatusDetermined
     }
 }

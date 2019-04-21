@@ -32,6 +32,7 @@ firebase.auth().onAuthStateChanged((user) => {
     console.log('user logged out');
     store.dispatch('clearUser')
   }
+  store.commit('setUserStatusDetermined', true)
 })
 
 export const auth = firebase.auth()

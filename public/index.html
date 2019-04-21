@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
@@ -9,13 +10,73 @@
     <title>client</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
-  </head>
-  <body>
+    <style>
+        body,
+        html {
+            height: 100%;
+        }
+
+        * {
+            color: white;
+            z-index: 1;
+        }
+
+        .blurry {
+            filter: blur(4px) brightness(0.6) !important;
+        }
+
+        .bg {
+            background-image: url("/backgrounds/stars-bluelight.jpg");
+            height: 100vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100%;
+            z-index: 0;
+            position: fixed;
+            transform: scale(1.2);
+            filter: brightness(0.8);
+        }
+
+        .splash-wrapper {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: zoominoutsinglefeatured 1.5s infinite;
+        }
+
+        @keyframes zoominoutsinglefeatured {
+            0% {
+                transform: scale(1, 1);
+            }
+
+            50% {
+                transform: scale(1.2, 1.2);
+            }
+
+            100% {
+                transform: scale(1, 1);
+            }
+        }
+    </style>
+</head>
+
+<body>
     <noscript>
-      <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to
+            continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div class="bg blurry"></div>
+    <div id="app">
+        <div class="splash-wrapper">
+            <svg style="width:150px;height:150px" viewBox="0 0 24 24">
+                <path fill="#fff" d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"></path>
+            </svg>
+        </div>
+    </div>
     <!-- built files will be auto injected -->
-</script>
-  </body>
+    </script>
+</body>
+
 </html>

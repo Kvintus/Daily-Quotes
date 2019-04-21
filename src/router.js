@@ -10,6 +10,7 @@ import FavouriteQuotes from '@/views/FavouriteQuotes'
 import Settings from '@/views/Settings'
 import CreateQuote from '@/views/CreateQuote'
 import Login from '@/views/Login'
+import splash from '@/views/SplashScreen'
 
 Vue.use(Router)
 

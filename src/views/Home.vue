@@ -44,7 +44,7 @@ export default {
     currentQuote() {
       return this.quotes[this.currentQuoteIndex]
     }
-  }
+  },
 }
 </script>
 
