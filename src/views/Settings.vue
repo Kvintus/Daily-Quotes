@@ -1,9 +1,12 @@
 <template>
     <div class="wrapper">
-        <Heading text="Settings"/>
+        <Heading class="heading" text="Settings"/>
         <v-layout row wrap>
             <v-flex xs12>
                 <v-text-field solo v-model="nick" label="Your nick"/>
+            </v-flex>
+            <v-flex xs12>
+                <v-switch dark v-model="blur" :label="`Blurred background`"></v-switch>
             </v-flex>
             <v-flex xs12 class="actions">
                 <v-btn outline @click="signOut" color="white">
@@ -25,7 +28,8 @@ export default {
     data() {
         return {
             nick: null,
-            saving: false
+            saving: false,
+            blur: localStorage.getItem('blur')
         };
     },
     methods: {
@@ -48,6 +52,18 @@ export default {
     watch: {
         vuexNick: function(val) {
             this.nick = this.vuexNick;
+        },
+        blur: function(val) {
+            if (val) {
+                document.querySelector('.bg').classList.remove('darken-filter')
+                document.querySelector('.bg').classList.add('darken-blurry-filter')
+                localStorage.setItem('blur', true)
+            } else {
+                document.querySelector('.bg').classList.remove('darken-blurry-filter')
+                document.querySelector('.bg').classList.add('darken-filter')
+                localStorage.removeItem('blur')
+            }
+
         }
     },
     computed: {
@@ -59,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
+.heading {
     margin-bottom: 1rem;
 }
 .spacer {

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <meta name="theme-color" content="#011122">
+    <meta name="theme-color" content="#010d17">
     <title>client</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
@@ -25,8 +25,12 @@
             z-index: 1;
         }
 
-        .blurry {
-            filter: blur(4px) brightness(0.6) !important;
+        .darken-filter {
+            filter: blur(0px) brightness(0.6) !important;
+        }
+
+        .darken-blurry-filter {
+            filter: blur(3px) brightness(0.6) !important;
         }
 
         .bg {
@@ -73,7 +77,7 @@
         <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to
             continue.</strong>
     </noscript>
-    <div class="bg blurry"></div>
+    <div class="bg darken-blurry-filter"></div>
     <div id="app">
         <div class="splash-wrapper">
             <svg style="width:150px;height:150px" viewBox="0 0 24 24">
@@ -82,6 +86,12 @@
         </div>
     </div>
     <!-- built files will be auto injected -->
+    </script>
+    <script>
+        let shouldBlur = localStorage.getItem('blur')
+        if (shouldBlur) {
+            document.querySelector('.bg').classList.add('darken-blurry-filter')
+        }
     </script>
 </body>
 
