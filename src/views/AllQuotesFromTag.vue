@@ -60,4 +60,7 @@ export default {
 .quote {
     margin-top: 1.2rem;
 }
+.wrapper {
+    height: 100vh;
+}
 </style>

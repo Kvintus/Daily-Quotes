@@ -1,10 +1,12 @@
 <template>
-    <div class="tag">
+    <div class="tag ripple">
         <span>{{name}}</span>
         <div class="spacer"></div>
         <div class="stats">
-            <v-icon dark>mdi-format-quote-close</v-icon><span>{{numOfQuotes}}</span>
-            <v-icon dark class="heart">mdi-heart</v-icon><span>{{numOfLikes}}</span>
+            <v-icon dark>mdi-format-quote-close</v-icon>
+            <span>{{numOfQuotes}}</span>
+            <v-icon dark class="heart">mdi-heart</v-icon>
+            <span>{{numOfLikes}}</span>
         </div>
     </div>
 </template>
@@ -14,7 +16,7 @@ export default {
     props: {
         numOfQuotes: {
             type: Number,
-            required: true,
+            required: true
         },
         numOfLikes: {
             type: Number,
@@ -25,7 +27,7 @@ export default {
             required: true
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -40,7 +42,6 @@ export default {
 .spacer {
     display: flex;
     flex: 1 1 auto;
-    
 }
 .stats {
     .v-icon {
@@ -53,5 +54,23 @@ export default {
 }
 .heart {
     font-size: 1.5rem;
+}
+.ripple {
+    background-position: center;
+    transition: background 0.8s;
+}
+.ripple:hover {
+    background: rgba(0, 0, 0, 0) radial-gradient(circle, transparent 1%, rgb(255, 255, 255) 1%) center/15000%;
+    * {
+        color: white;
+    }
+}
+.ripple:active {
+    * {
+        color: black;
+    }
+    background-color: rgb(255, 255, 255);
+    background-size: 100%;
+    transition: background 0s;
 }
 </style>

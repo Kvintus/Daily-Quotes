@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" v-if="authors.length">
         <Heading text="Authors"/>
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <TagListItem
