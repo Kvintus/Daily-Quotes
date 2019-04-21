@@ -24,7 +24,7 @@ export default {
       require: true
     },
     date: {
-      type: String,
+      type: Number,
       require: true,
     }
   },

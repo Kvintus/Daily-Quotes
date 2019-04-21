@@ -1,7 +1,7 @@
 <template>
   <div class="quote">
     <div class="text">
-      <h1>"{{quote}}"</h1>
+      <h1>{{quote}}</h1>
     </div>
     <div class="author">
       -

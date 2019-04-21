@@ -49,6 +49,11 @@ export default {
         currentQuote() {
             return this.quotes[this.currentQuoteIndex];
         }
+    },
+    created() {
+      setInterval(() => {
+        this.nextQuote()
+      }, 7500)
     }
 };
 </script>
