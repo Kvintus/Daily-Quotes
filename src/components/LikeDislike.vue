@@ -107,7 +107,7 @@ export default {
                     this.negativeLikes.push(likeData.userId);
                 }
             });
-        }
+         }
     },
     mounted() {
         this.getLikes()

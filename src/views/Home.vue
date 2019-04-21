@@ -6,7 +6,7 @@
     <div @click="nextQuote" class="holder">
         <Quote :quote="currentQuote.text" :author="currentQuote.authorNick"/>
     </div>
-    <BottomMenu :id="currentQuote.id" :author="{id: currentQuote.userId}"/>
+    <BottomMenu @likesLoaded="likesLoaded=true"  :id="currentQuote.id" :author="{id: currentQuote.userId}"/>
   </div>
 </template>
 
@@ -22,7 +22,8 @@ export default {
   },
   data() {
     return {
-      currentQuoteIndex: 0
+      currentQuoteIndex: 0,
+      likesLoaded: false,
     }
   },
   methods: {
@@ -50,7 +51,7 @@ export default {
 
 <style lang="scss" scoped>
 .holder {
-  height: 100%;
+  height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -59,7 +60,7 @@ export default {
 .top-counter {
   font-size: 1.5rem;
   color: rgb(168, 168, 168);
-  position: absolute;
+  // position: absolute;
   top: 0;
   left: 0;
   width: 100%;
