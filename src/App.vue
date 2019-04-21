@@ -1,6 +1,7 @@
 <template>
     <v-app>
-        <div v-if="userStatusDetermined">
+        <SplashScreen v-if="!userStatusDetermined"/>
+        <div v-else>
             <v-container class="main-container">
                 <!-- <transition name="fade"> -->
                 <router-view></router-view>
