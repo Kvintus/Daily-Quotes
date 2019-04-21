@@ -9,6 +9,7 @@
             @likesLoaded="likesLoaded=true"
             :id="currentQuote.id"
             :author="{id: currentQuote.userId}"
+            :date="currentQuote.createdAt"
         />
     </div>
 </template>
@@ -79,6 +80,9 @@ export default {
     .spacer {
         flex: 1 1 auto;
     }
+}
+.top-counter, .bottom-menu {
+  height: 52px;;
 }
 </style>
 

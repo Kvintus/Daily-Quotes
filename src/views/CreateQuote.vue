@@ -1,5 +1,7 @@
 <template>
-    <div>
+    <div class="wrapper">
+        <div>
+
         <Heading text="Create Quote"/>
         <v-layout row wrap>
             <v-flex xs12>
@@ -30,6 +32,7 @@
                 class="publish"
             >Publish Quote</v-btn>
         </v-layout>
+        </div>
     </div>
 </template>
 

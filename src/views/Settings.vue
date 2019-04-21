@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h1>Settings</h1>
+    <div class="wrapper">
+        <Heading text="Settings"/>
         <v-layout row wrap>
             <v-flex xs12>
                 <v-text-field solo v-model="nick" label="Your nick"/>
@@ -17,8 +17,11 @@
 </template>
 
 <script>
+import Heading from "@/components/Misc/Heading";
+
 export default {
     name: "Settings",
+    components: { Heading },
     data() {
         return {
             nick: null,

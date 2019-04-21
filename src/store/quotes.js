@@ -112,6 +112,8 @@ export default {
             commit
         }, quote) {
             // Create quote
+            console.log(quote);
+            
             let newQuoteRef = db.collection('quotes').doc()
             await newQuoteRef.set(omit(quote, ['tags']))
 

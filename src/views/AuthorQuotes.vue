@@ -7,6 +7,7 @@
                 :author="{nick: authorQuotes.nick, id: authorQuotes.authorId}"
                 :text="quote.text"
                 :id="quote.id"
+                :date="quote.createdAt"
             />
         </div>
     </div>

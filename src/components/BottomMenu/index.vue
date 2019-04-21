@@ -22,6 +22,10 @@ export default {
     id: {
       type: String,
       require: true
+    },
+    date: {
+      type: String,
+      require: true,
     }
   },
   components: {
@@ -30,7 +34,7 @@ export default {
   },
   computed: {
     currentDate() {
-      return moment().format("DD.MM.YYYY");
+      return moment(this.date).format("DD.MM.YYYY");
     }
   },
   
