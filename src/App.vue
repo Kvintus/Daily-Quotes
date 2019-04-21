@@ -74,5 +74,6 @@ export default {
 }
 .wrapper {
     height: 100vh !important;
+    padding-bottom: 2rem;
 }
 </style>

@@ -40,12 +40,7 @@ export default {
 
 <style lang="scss" scoped>
 .bottom-menu {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 100%;
-    text-align: center;
-    // padding-bottom: 10px;
   .flex {
     display: flex;
     justify-content: center;
