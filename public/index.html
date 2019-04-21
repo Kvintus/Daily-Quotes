@@ -13,7 +13,11 @@
     <style>
         body,
         html {
-            height: 100%;
+            height: 100vh;
+        }
+
+        #app {
+            overflow: hidden;
         }
 
         * {
@@ -31,11 +35,13 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            width: 100%;
+            width: 100vw;
             z-index: 0;
             position: fixed;
             transform: scale(1.2);
             filter: brightness(0.8);
+            top: 0;
+            right: 0;
         }
 
         .splash-wrapper {
