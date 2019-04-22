@@ -3,10 +3,17 @@ import Vuex from 'vuex'
 import UserModule from './user'
 import QuotesModule from './quotes'
 import TagModule from './tags'
+import VuexPersistence from 'vuex-persist'
+
 
 const uuid4 = require('uuid/v4')
 
 Vue.use(Vuex)
+
+const vuexUser = new VuexPersistence({
+    storage: window.localStorage,
+    modules: ['UserModule'], //only save user module
+})
 
 export default new Vuex.Store({
     modules: {
@@ -33,5 +40,6 @@ export default new Vuex.Store({
                 commit('setAppId', newAppId)
             }
         }
-    }
+    },
+    plugins: [vuexUser.plugin]
 })

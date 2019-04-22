@@ -38,6 +38,8 @@ firebase.auth().onAuthStateChanged((user) => {
 export const auth = firebase.auth()
 export const db = firebase.firestore()
 
+Vue.config.devtools = true
+
 new Vue({
   router,
   store,
