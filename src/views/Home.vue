@@ -64,7 +64,8 @@ export default {
         // setInterval(() => {
         //     this.nextQuote();
         // }, 2000);
-        let shouldDisplay = localStorage.getItem('landing')
+        let storageValue = localStorage.getItem('landing')
+        let shouldDisplay = storageValue ? storageValue : 'last'
         console.log(shouldDisplay)
         switch (shouldDisplay) {
             case 'last':
