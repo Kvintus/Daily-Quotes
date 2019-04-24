@@ -61,9 +61,9 @@ export default {
         }
     },
     async created() {
-        // setInterval(() => {
-        //     this.nextQuote();
-        // }, 2000);
+        setInterval(() => {
+            this.nextQuote();
+        }, 7500);
         let storageValue = localStorage.getItem('landing')
         let shouldDisplay = storageValue ? storageValue : 'last'
         console.log(shouldDisplay)

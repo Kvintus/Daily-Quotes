@@ -63,5 +63,12 @@ export default new Router({
       name: 'CreateQuote',
       component: CreateQuote
     },
+    {
+      path: "*",
+      name: "CatchAll",
+      beforeEnter(to, from, next) {
+        next('/')
+      }
+    }
   ]
 })
