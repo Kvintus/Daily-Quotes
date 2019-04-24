@@ -73,10 +73,11 @@ export default {
                     quoteStatisticsPromArray.push(getNumberOfQuoteLikes(quoteDoc.id, true))
                 }
                 let quotesLikes = await Promise.all(quoteStatisticsPromArray)
+                
                 // Fetch statistics to to quotes
                 return {
                     id: authorDoc.id,
-                    numOfPositiveLikes: quotesLikes.reduce((a, b) => a + b),
+                    numOfPositiveLikes: quotesLikes.length ? quotesLikes.reduce((a, b) => a + b): 0,
                     numOfQuotes: quotesOfAuthorSnap.docs.length,
                     nick: await getUserNick(authorDoc.id)
                 }

@@ -29,7 +29,7 @@ export default {
         return {
             nick: null,
             saving: false,
-            blur: localStorage.getItem('blur')
+            blur: localStorage.getItem('blur') || true // On by default
         };
     },
     methods: {

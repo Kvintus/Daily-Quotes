@@ -2,7 +2,12 @@
     <div class="wrapper cst-wrapper" v-if="currentQuote">
         <div class="top-counter">{{currentQuoteIndex+1}}/{{quotes.length}}</div>
         <div class="main" @click="nextQuote">
-            <Quote :quote="currentQuote.text" :author="currentQuote.authorNick"/>
+            <Quote
+                :style="{opacity: quoteOpacity}"
+                class="quote-animation"
+                :quote="currentQuote.text"
+                :author="currentQuote.authorNick"
+            />
         </div>
         <BottomMenu
             class="bottom-menu"
@@ -18,6 +23,7 @@
 import Quote from "@/components/Quote";
 import BottomMenu from "@/components/BottomMenu/index";
 import store from "@/store";
+import { setTimeout } from 'timers';
 
 export default {
     components: {
@@ -27,16 +33,21 @@ export default {
     data() {
         return {
             currentQuoteIndex: 0,
-            likesLoaded: false
+            likesLoaded: false,
+            quoteOpacity: 1
         };
     },
     methods: {
         nextQuote() {
-            if (this.currentQuoteIndex + 1 === this.quotes.length) {
-                this.currentQuoteIndex = 0;
-            } else {
-                this.currentQuoteIndex += 1;
-            }
+            this.quoteOpacity = 0;
+            setTimeout(() => {
+                this.quoteOpacity = 1
+                if (this.currentQuoteIndex + 1 === this.quotes.length) {
+                    this.currentQuoteIndex = 0;
+                } else {
+                    this.currentQuoteIndex += 1;
+                }
+            }, 500)
         }
     },
     beforeRouteEnter(to, from, next) {
@@ -51,14 +62,17 @@ export default {
         }
     },
     created() {
-      setInterval(() => {
-        this.nextQuote()
-      }, 7500)
+        // setInterval(() => {
+        //     this.nextQuote();
+        // }, 2000);
     }
 };
 </script>
 
 <style lang="scss" scoped>
+.quote-animation {
+    transition: ease-in-out 300ms;
+}
 .holder {
     .spacer {
         width: 100%;
@@ -86,8 +100,9 @@ export default {
         flex: 1 1 auto;
     }
 }
-.top-counter, .bottom-menu {
-  height: 52px;;
+.top-counter,
+.bottom-menu {
+    height: 52px;
 }
 </style>
 

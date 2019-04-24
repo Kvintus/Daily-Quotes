@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$store.getters.isLoggedIn">
+    <div class="wrapper" v-if="$store.getters.isLoggedIn">
         <Heading text="Favourite Qutoes"/>
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <QuoteItem

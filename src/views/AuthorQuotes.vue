@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper">
         <Heading :text="currentUsersQuotes ? 'My Quotes' : authorQuotes.nick"/>
         <v-text-field v-model="searchTerm" dark color="white" :append-icon="'search'"></v-text-field>
         <div class="quotes">
@@ -36,7 +36,7 @@ export default {
     //     this.$store.dispatch('fetchAuthorQuotes', this.$route.params.authorId)
     // }
     computed: {
-        authorQuotes(){ return this.$store.getters.authorQuotes },
+        authorQuotes(){ return this.$store.getters.authorQuotes ? this.$store.getters.authorQuotes : [] },
         quotesToDisplay() {
             return this.authorQuotes.quotes.filter(
                 quote =>
