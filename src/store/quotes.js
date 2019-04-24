@@ -75,6 +75,8 @@ export async function getQuoteArrayFromIdArray(arrayOfIds) {
         quotesPromArr.push((async () => {
             let quote = await db.collection('quotes').doc(quoteId).get()
             let quoteData = quote.data()
+            console.log(quoteData);
+            
             return {
                 ...quoteData,
                 userNick: await getUserNick(quoteData.userId),
