@@ -6,6 +6,13 @@
                 <v-text-field solo v-model="nick" label="Your nick"/>
             </v-flex>
             <v-flex xs12>
+                <p>Choose which quotes should be cycled through</p>
+                <v-radio-group dark v-model="landing" row>
+                    <v-radio label="Favourite" value="favourite"></v-radio>
+                    <v-radio label="Last 100" value="last"></v-radio>
+                </v-radio-group>
+            </v-flex>
+            <v-flex xs12>
                 <v-switch dark v-model="blur" :label="`Blurred background`"></v-switch>
             </v-flex>
             <v-flex xs12 class="actions">
@@ -28,9 +35,14 @@ export default {
     data() {
         return {
             nick: null,
+            landing: "favourite",
             saving: false,
-            blur: localStorage.getItem('blur') || true // On by default
+            blur: localStorage.getItem("blur") || true // On by default
         };
+    },
+    created() {
+        let storedLanding = localStorage.getItem('landing')
+        this.landing = storedLanding ? storedLanding : 'last'
     },
     methods: {
         signOut() {
@@ -55,15 +67,21 @@ export default {
         },
         blur: function(val) {
             if (val) {
-                document.querySelector('.bg').classList.remove('darken-filter')
-                document.querySelector('.bg').classList.add('darken-blurry-filter')
-                localStorage.setItem('blur', true)
+                document.querySelector(".bg").classList.remove("darken-filter");
+                document
+                    .querySelector(".bg")
+                    .classList.add("darken-blurry-filter");
+                localStorage.setItem("blur", true);
             } else {
-                document.querySelector('.bg').classList.remove('darken-blurry-filter')
-                document.querySelector('.bg').classList.add('darken-filter')
-                localStorage.removeItem('blur')
+                document
+                    .querySelector(".bg")
+                    .classList.remove("darken-blurry-filter");
+                document.querySelector(".bg").classList.add("darken-filter");
+                localStorage.removeItem("blur");
             }
-
+        },
+        landing: function (val) {
+            localStorage.setItem('landing', val)
         }
     },
     computed: {

@@ -6,7 +6,7 @@
                 :style="{opacity: quoteOpacity}"
                 class="quote-animation"
                 :quote="currentQuote.text"
-                :author="currentQuote.authorNick"
+                :author="currentQuote.userNick"
             />
         </div>
         <BottomMenu
@@ -26,6 +26,7 @@ import store from "@/store";
 import { setTimeout } from 'timers';
 
 export default {
+    name: 'Home',
     components: {
         Quote,
         BottomMenu
@@ -34,7 +35,8 @@ export default {
         return {
             currentQuoteIndex: 0,
             likesLoaded: false,
-            quoteOpacity: 1
+            quoteOpacity: 1,
+            quotes: []
         };
     },
     methods: {
@@ -54,17 +56,27 @@ export default {
         store.dispatch("fetchAllQuotes").then(() => next());
     },
     computed: {
-        quotes() {
-            return this.$store.getters.allQuotes;
-        },
         currentQuote() {
             return this.quotes[this.currentQuoteIndex];
         }
     },
-    created() {
+    async created() {
         // setInterval(() => {
         //     this.nextQuote();
         // }, 2000);
+        let shouldDisplay = localStorage.getItem('landing')
+        console.log(shouldDisplay)
+        switch (shouldDisplay) {
+            case 'last':
+                this.quotes = await store.dispatch("fetchAllQuotes")
+                break;
+            case 'favourite': 
+                this.quotes = await store.dispatch("fetchAllFavouriteQutoes")
+                break;
+            default:
+                break;
+        }
+        
     }
 };
 </script>

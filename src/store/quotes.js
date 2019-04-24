@@ -91,7 +91,7 @@ export default {
         allQuotes: [],
         authorQuotes: {
             authorId: null,
-            authorNick: null,
+            userNick: null,
             quotes: []
         },
         tagQuotes: []
@@ -163,6 +163,7 @@ export default {
         async fetchAllQuotes({
             commit
         }) {
+            // TODO: Could be optimised by Promise.All
             let quotesSnap = await db.collection('quotes').get()
             let quotes = []
             for (let quoteDoc of quotesSnap.docs) {
@@ -170,11 +171,12 @@ export default {
                 let toPush = {
                     ...quoteDoc.data(),
                     id: quoteDoc.id,
-                    authorNick: user.data().nick
+                    userNick: user.data().nick
                 }
                 quotes.push(toPush)
             }
             commit('setAllQuotes', quotes)
+            return quotes;
         },
         async fetchAllFavouriteQutoes({
             commit,
