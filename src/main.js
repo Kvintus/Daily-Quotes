@@ -6,6 +6,13 @@ import store from './store'
 import './registerServiceWorker'
 import firebase from 'firebase';
 import pick from 'lodash.pick'
+import 'vuetify/src/stylus/app.styl'
+
+import '@mdi/font/css/materialdesignicons.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
+import VueOnlinePlugin from 'vue-navigator-online'
+Vue.use(VueOnlinePlugin)
 
 Vue.config.productionTip = false
 
@@ -19,11 +26,21 @@ var config = {
 };
 firebase.initializeApp(config);
 // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+firebase.firestore().enablePersistence()
 
-// export const fAuth  = firebase.auth()
+var connectedRef = firebase.database().ref(".info/connected");
+connectedRef.on("value", function(snap) {
+  if (snap.val() === true) {
+    console.log("connected");
+  } else {
+    console.log("not connected");
+  }
+});
 
 // Set the user upon App start
 firebase.auth().onAuthStateChanged((user) => {
+  console.log("Firebase auth change");
+  
   if (user) {
     store.commit('setUser', pick(user, ['uid', 'photoUrl', 'email', 'displayName']))
     store.dispatch('getAndSetUserNick', user.uid)
@@ -36,7 +53,6 @@ firebase.auth().onAuthStateChanged((user) => {
 export const auth = firebase.auth()
 export const db = firebase.firestore()
 
-Vue.config.devtools = true
 
 new Vue({
   router,

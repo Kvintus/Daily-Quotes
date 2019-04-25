@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <!-- <SplashScreen v-if="!userStatusDetermined"/> -->
-        <div>
+        <SplashScreen v-if="!userStatusDetermined"/>
+        <div v-else>
             <v-container class="main-container">
                 <transition :name="transitionName">
                     <router-view></router-view>
@@ -13,6 +13,7 @@
 
 <script>
 import SplashScreen from "@/views/SplashScreen";
+import Swal from 'sweetalert2'
 const DEFAULT_TRANSITION = "fade";
 export default {
     name: "App",
@@ -28,6 +29,21 @@ export default {
         },
         userStatusDetermined() {
             return this.$store.getters.userStatusDetermined;
+        },
+        quotesRetrieved() {
+            return this.$store.getters.allQuotes
+        }
+    },
+    watch: {
+        isOnline(val) {
+            console.log('online value changed', val);
+            if (!val) {
+                Swal.fire({
+                    title: "Online status changed",
+                    html: "<p style='color: black;'>You are now offline, not all of the features of the app will not work as expected</p>",
+                    type: "info"
+                })
+            }
         }
     },
     created() {

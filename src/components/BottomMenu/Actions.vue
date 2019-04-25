@@ -15,7 +15,7 @@
                 >
                     <template v-slot:activator>
                         <v-btn fab small color="white">
-                            <v-icon dark>dehaze</v-icon>
+                            <v-icon dark>mdi-menu</v-icon>
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </template>
@@ -46,7 +46,7 @@
                         <v-icon>settings</v-icon>Settings
                     </v-btn>
 
-                    <v-btn v-if="!isUserSignedIn" @click="navigateTo('/login')" round small color="white">
+                    <v-btn v-if="!isUserSignedIn" :disabled="!isOnline" @click="navigateTo('/login')" round small color="white">
                         <v-icon>mdi-login</v-icon>Sign In
                     </v-btn>
                 </v-speed-dial>

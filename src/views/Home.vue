@@ -53,7 +53,8 @@ export default {
         }
     },
     beforeRouteEnter(to, from, next) {
-        store.dispatch("fetchAllQuotes").then(() => next());
+        store.dispatch("fetchAllQuotes");
+        next()
     },
     computed: {
         currentQuote() {
@@ -66,7 +67,6 @@ export default {
         }, 7500);
         let storageValue = localStorage.getItem('landing')
         let shouldDisplay = storageValue ? storageValue : 'last'
-        console.log(shouldDisplay)
         switch (shouldDisplay) {
             case 'last':
                 this.quotes = await store.dispatch("fetchAllQuotes")
