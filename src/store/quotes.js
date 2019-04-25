@@ -70,17 +70,19 @@ export async function getNumberOfQuoteLikes(quoteId, positive) {
 }
 
 export async function getQuoteArrayFromIdArray(arrayOfIds) {
+    console.log(arrayOfIds);
+    
     let quotesPromArr = []
     for (let quoteId of arrayOfIds) {
         quotesPromArr.push((async () => {
             let quote = await db.collection('quotes').doc(quoteId).get()
             let quoteData = quote.data()
-            console.log(quoteData);
-            
-            return {
-                ...quoteData,
-                userNick: await getUserNick(quoteData.userId),
-                id: quote.id
+            if (quoteData) {
+                return {
+                    ...quoteData,
+                    userNick: await getUserNick(quoteData.userId),
+                    id: quote.id
+                }
             }
         })())
     }
