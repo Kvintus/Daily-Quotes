@@ -36,7 +36,6 @@ export default {
 
 .quote {
   padding: 35px;
-  width: 100%;
   z-index: 1;
   .text {
     text-align: center;
