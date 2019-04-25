@@ -49,6 +49,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    &:first-child {
+      justify-content: flex-start;
+    }
+    &:last-child {
+      justify-content: flex-end;
+    }
   }
 }
 </style>
